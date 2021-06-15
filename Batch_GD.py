@@ -1,34 +1,51 @@
 import numpy as np
 
-rng = np.random.RandomState(1)
-X = 5*rng.rand(100, 1)
-y = 6 + 2*X + np.random.randn(100, 1)
-X_b = np.c_[np.ones((100, 1)), X]
 
+def batch_gradient_descent(X, y, learning_rate, a0_init=1.0, a1_init=1.0, i_max=250, tol=1e-5):
 
-def batch_gradient_descent(X, learning_rate, a0_init=1.0, a1_init=1.0, iters=250, tol=1e-5):
-    a = np.ndarray(shape=(2, 1), dtype=float, buffer=np.array([a0_init, a1_init]))
-    steps_a0 = [a[0][0]]
-    steps_a1 = [a[1][0]]
+    if type(a1_init) != np.float:
+        a1_init = np.float(a1_init)
+
+    if len(X) <= 2:
+        print("Error. Dataset has to contain minimum 2 points!")
+        return False
+
+    if learning_rate >= 1:
+        print("Error. Learning rate cannot be bigger than 0! Algorithm will not converge!")
+        return False
+
+    X_b = np.c_[np.ones((len(X), 1)), X]
+
+    pos = np.ndarray(shape=(2, 1), dtype=float, buffer=np.array([a0_init, a1_init]))
+    steps_a0 = [pos[0][0]]
+    steps_a1 = [pos[1][0]]
 
     m = len(X)
     i = 0
 
-    for _ in range(iters):
-        gradients = 2/m * X_b.T.dot(X_b.dot(a)-y)
+    for _ in range(i_max):
+        gradients = 2/m * X_b.T.dot(X_b.dot(pos)-y)
 
         # early stopping:
-        if np.any(np.abs(learning_rate * gradients)<tol):
+        if np.all(np.abs(learning_rate * gradients) < tol):
             break
         else:
-            a = a - learning_rate*gradients
-            steps_a0.append(a[0][0])
-            steps_a1.append(a[1][0])
+            pos = pos - learning_rate*gradients
+            steps_a0.append(pos[0][0])
+            steps_a1.append(pos[1][0])
             i += 1
 
-    steps = np.column_stack((steps_a0,steps_a1))
+    steps = np.column_stack((steps_a0, steps_a1))
 
-    return a, steps, i
+    return [pos, steps, i]
 
 
-batch_gradient_descent(X, 0.1, 10.0, 0.0, 300, 0.001)
+rng = np.random.RandomState(1)
+X = 5*rng.rand(100, 1)
+y = 6 + 2*X + np.random.randn(100, 1)
+
+results = batch_gradient_descent(X, y, 1, 10, 0, 300, 0.001)
+
+# print("The final results are: a0={:.2f} and a1={:.2f}, achieved in {} iterations.".format(results[0].T[0][0],
+#                                                                                          results[0].T[0][1],
+#                                                                                          results[2]))
