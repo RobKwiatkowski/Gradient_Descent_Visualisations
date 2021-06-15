@@ -3,6 +3,10 @@ import numpy as np
 
 def batch_gradient_descent(X, y, learning_rate, a0_init=1.0, a1_init=1.0, i_max=250, tol=1e-5):
 
+    if any(not isinstance(e, (int, float)) for e in [learning_rate, a0_init, i_max, tol]):
+        print("Error! Only numerical inputs are allowed.")
+        return False
+
     if type(a1_init) != np.float:
         a1_init = np.float(a1_init)
 

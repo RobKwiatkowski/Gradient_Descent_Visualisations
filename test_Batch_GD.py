@@ -34,8 +34,8 @@ class TestMe(TestCase):
 
         rng = np.random.RandomState(1)
         x = 5 * rng.rand(100, 1)
-        y = 6 + 2 * x + np.random.randn(len(x), 1)
-        result = Batch_GD.batch_gradient_descent(x, y, 0.02, 10, 0, 1000, 0.0001)
+        y = 6 + 2 * x
+        result = Batch_GD.batch_gradient_descent(x, y, 0.05, 0, 0, 2000, 0.001)
         a0 = result[0][0][0]
 
         self.assertAlmostEqual(a0, 6, places=1)
