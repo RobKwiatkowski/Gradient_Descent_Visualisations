@@ -6,12 +6,16 @@ def batch_gradient_descent(X, y, learning_rate, a0_init=1.0, a1_init=1.0, i_max=
     if type(a1_init) != np.float:
         a1_init = np.float(a1_init)
 
-    if len(X) <= 2:
-        print("Error. Dataset has to contain minimum 2 points!")
+    if len(X) <= 2 or len(y) <= 2:
+        print("Error! Dataset has to contain minimum 2 points!")
+        return False
+
+    if len(X) != len(y):
+        print("Error! X and y have to be matching!")
         return False
 
     if learning_rate >= 1:
-        print("Error. Learning rate cannot be bigger than 0! Algorithm will not converge!")
+        print("Error! Learning rate cannot be bigger than 0! Algorithm will not converge!")
         return False
 
     X_b = np.c_[np.ones((len(X), 1)), X]
@@ -43,9 +47,3 @@ def batch_gradient_descent(X, y, learning_rate, a0_init=1.0, a1_init=1.0, i_max=
 rng = np.random.RandomState(1)
 X = 5*rng.rand(100, 1)
 y = 6 + 2*X + np.random.randn(100, 1)
-
-results = batch_gradient_descent(X, y, 1, 10, 0, 300, 0.001)
-
-# print("The final results are: a0={:.2f} and a1={:.2f}, achieved in {} iterations.".format(results[0].T[0][0],
-#                                                                                          results[0].T[0][1],
-#                                                                                          results[2]))
