@@ -46,8 +46,3 @@ def batch_gradient_descent(X, y, learning_rate, a0_init=1.0, a1_init=1.0, i_max=
     steps = np.column_stack((steps_a0, steps_a1))
 
     return [pos, steps, i]
-
-
-rng = np.random.RandomState(1)
-X = 5*rng.rand(100, 1)
-y = 6 + 2*X + np.random.randn(100, 1)
