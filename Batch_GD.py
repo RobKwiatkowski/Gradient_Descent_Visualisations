@@ -56,6 +56,9 @@ def batch_gradient_descent(X, y, learning_rate, a0_init=1.0, a1_init=1.0, i_max=
             steps_a1.append(pos[1][0])
             i += 1
 
+    if i == i_max:
+        print("Process finished achieved maximum number of iterations ({}).".format(i))
+
     steps = np.column_stack((steps_a0, steps_a1))
 
     return [pos, steps, i]

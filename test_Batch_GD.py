@@ -30,7 +30,7 @@ class TestMe(TestCase):
         result = Batch_GD.batch_gradient_descent(x, y, 0.05, 10, 0, 300, 0.001)
         self.assertFalse(result)
 
-    def test_normal_case(self):
+    def test_normal_case1(self):
 
         rng = np.random.RandomState(1)
         x = 5 * rng.rand(100, 1)
@@ -39,3 +39,13 @@ class TestMe(TestCase):
         a0 = result[0][0][0]
 
         self.assertAlmostEqual(a0, 6, places=1)
+
+    def test_normal_case2(self):
+
+        rng = np.random.RandomState(1)
+        x = 5 * rng.rand(100, 1)
+        y = 6 + 2 * x
+        result = Batch_GD.batch_gradient_descent(x, y, 0.05, 0, 0, 10, 0.001)
+        a0 = result[2]
+
+        self.assertEqual(a0, 10)
