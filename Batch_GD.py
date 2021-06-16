@@ -3,6 +3,18 @@ import numpy as np
 
 def batch_gradient_descent(X, y, learning_rate, a0_init=1.0, a1_init=1.0, i_max=250, tol=1e-5):
 
+    """
+
+    :param X: data points x coordinates
+    :param y: data points y coordinates
+    :param learning_rate: fixed learning rate
+    :param a0_init: initialisation point for a_0 coefficient
+    :param a1_init: initialisation point for a_1 coefficient
+    :param i_max: maximum allowable number of iterations
+    :param tol: tolerance for early stopping
+    :return: list containing final position, steps history and total number of iterations
+    """
+
     if any(not isinstance(e, (int, float)) for e in [learning_rate, a0_init, i_max, tol]):
         print("Error! Only numerical inputs are allowed.")
         return False
@@ -36,6 +48,7 @@ def batch_gradient_descent(X, y, learning_rate, a0_init=1.0, a1_init=1.0, i_max=
 
         # early stopping:
         if np.all(np.abs(learning_rate * gradients) < tol):
+            print("Process finished after {} iterations.".format(i))
             break
         else:
             pos = pos - learning_rate*gradients
